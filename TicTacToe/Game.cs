@@ -7,101 +7,83 @@ namespace TicTacToe
         private readonly Board m_Board;
         private readonly Player m_Player1;
         private readonly Player m_Player2;
-        private Player m_CurrentPlayer;
+        private Player m_CurrentPlayerTurn;
+        private Player m_GameWinner;
 
         public Game(int boardSize, bool isTwoPlayerGame)
         {
-            m_Board = new Board(boardSize);
-            m_Player1 = new Player("X", true);
-            m_Player2 = new Player("O", isTwoPlayerGame);
+            Player.ePlayerId player2Id = isTwoPlayerGame ? Player.ePlayerId.Player2 : Player.ePlayerId.Computer;
 
-            m_CurrentPlayer = m_Player1;
+            m_Board = new Board(boardSize);
+            m_Player1 = new Player(Player.ePlayerId.Player1);
+            m_Player2 = new Player(player2Id);
+            m_CurrentPlayerTurn = m_Player1;
+            m_GameWinner = null;
         }
 
+        public Player Winner
+        {
+            get
+            {
+                return m_GameWinner;
+            }
+            
+        }
+
+        public int BoardSize
+        {
+            get
+            {
+                return m_Board.Size;
+            }
+        }
+
+        public Board.eSquareValue GetSignByCoordinates(int i_X, int i_Y)
+        {
+            return m_Board.GetSquareValue(i_X, i_Y);
+        }
+
+
+        public bool IsComputerTurn()
+        {
+            return m_CurrentPlayerTurn.Id == Player.ePlayerId.Computer;
+        }
         public void Start()
         {
             while (!IsGameOver())
             {
-                GamePlay();
+                PlayTurn();
             }
 
-            Console.WriteLine("Game over!");
-
-            if (IsDraw())
-            {
-                Console.WriteLine("It's a draw!");
-            }
-            else
-            {
-                Player gameWinner = m_CurrentPlayer == m_Player1 ? m_Player2 : m_Player1;
-
-                Console.WriteLine($"{gameWinner.Sign} won the game!");
-            }
         }
 
-        private void GamePlay()
+
+
+        public void PlayAsComputer()
         {
             int x, y;
+            Board.eSquareValue sign = Board.eSquareValue.Player2;
+            Random rand = new Random();
+            x = rand.Next(m_Board.Size);
+            y = rand.Next(m_Board.Size);
 
-            if (!m_CurrentPlayer.IsHuman)
+            while (!m_Board.IsEmpty(x, y))
             {
-                Random rand = new Random();
                 x = rand.Next(m_Board.Size);
                 y = rand.Next(m_Board.Size);
-
-                while (!m_Board.IsEmpty(x, y))
-                {
-                    x = rand.Next(m_Board.Size);
-                    y = rand.Next(m_Board.Size);
-                }
-
-                Console.WriteLine($"{m_CurrentPlayer.Sign}'s turn:");
-                Console.WriteLine($"Computer plays ({x}, {y})");
-
-                m_Board.Mark(x, y, m_CurrentPlayer.Sign);
-
-                ConsoleIO.ClearScreen();
-                ConsoleIO.PrintBoard(m_Board);
             }
-            else
-            {
-                do
-                {
-                    Console.WriteLine($"{m_CurrentPlayer.Sign}'s turn:");
-                    Console.Write("Enter x coordinate: ");
-                    x = ConsoleIO.ReadInt();
-                    Console.Write("Enter y coordinate: ");
-                    y = ConsoleIO.ReadInt();
 
-                    if (!m_Board.IsEmpty(x, y))
-                    {
-                        Console.WriteLine("That cell is already occupied! Try again.");
-                    }
-                } while (!m_Board.IsEmpty(x, y));
-            }
-            
-
-            m_Board.Mark(x, y, m_CurrentPlayer.Sign);
+            m_Board.MarkSquare(x, y, sign);
 
             ConsoleIO.ClearScreen();
             ConsoleIO.PrintBoard(m_Board);
-
-            if (IsGameOver())
-            {
-                return;
-            }
-
-            
-
-            m_CurrentPlayer = m_CurrentPlayer == m_Player1 ? m_Player2 : m_Player1;
         }
-
-        private bool IsGameOver()
+        public bool IsGameOver()
         {
             return m_Board.IsFull() || m_Board.HasWinner();
         }
 
-        private bool IsDraw()
+        public bool IsDraw()
         {
             return m_Board.IsFull() && !m_Board.HasWinner();
         }

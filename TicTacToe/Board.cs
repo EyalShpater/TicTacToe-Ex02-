@@ -8,104 +8,120 @@ namespace TicTacToe
 
     public class Board
     {
+        public enum eSquareValue { Empty, Player1, Player2 };
+        
+        private eSquareValue[,] m_Board; 
 
-        public readonly Player.ePlayerType[,] m_Sign; //enum
-        public readonly int Size; //delete
-
-        public Board(int size)
+        public Board(int i_Size)
         {
-            Size = size;
-            m_Sign = new string[size, size];
+            r_Board = new eSquareValue[i_Size, i_Size];
         }
 
-        public void Mark(int x, int y, string sign) //
+        public int Size
         {
-            m_Sign[x, y] = sign;
+            get
+            {
+                return m_Board.Length;
+            }
         }
 
-        public bool IsEmpty(int x, int y)
+        public eSquareValue GetSquareValue(int i_X, int i_Y)
         {
-            return m_Sign[x, y] == null;
+            return m_Board[i_X, i_Y];
+        }
+
+        public void MarkSquare(int i_X, int i_Y, eSquareValue i_Sign)
+        {
+            m_Board[i_X, i_Y] = i_Sign;
+        }
+
+        public bool IsEmpty(int i_X, int i_Y)
+        {
+            return r_Board[i_X, i_Y] == eSquareValue.Empty;
         }
 
         public bool IsFull()
         {
-            for (int x = 0; x < Size; x++)
+            bool result = true;
+
+            for (int x = 0; x < r_Board.Length; x++)
             {
-                for (int y = 0; y < Size; y++)
+                for (int y = 0; y < r_Board.Length; y++)
                 {
                     if (IsEmpty(x, y))
                     {
-                        return false;
+                        result = false;
+                        break;
                     }
                 }
             }
-            return true;
+
+            return result;
         }
 
-        public bool HasWinner()
+        public bool HasWinner() // move to game
         {
-            for (int i = 0; i < Size; i++)
+            for (int i = 0; i < r_Board.Length; i++)
             {
-                if (CheckRow(i) || CheckColumn(i))
+                if (CheckSequanceInRow(i) || CheckSequanceInColumn(i))
                 {
                     return true;
                 }
             }
 
-            return CheckDiagonal() || CheckAntiDiagonal();
+            return CheckSequanceInDiagonal() || CheckAntiDiagonal();
         }
 
-        private bool CheckRow(int row)
+        private bool CheckSequanceInRow(int row)
         {
-            string sign = m_Sign[row, 0];
-            for (int i = 1; i < Size; i++)
+            eSquareValue sign = r_Board[row, 0];
+            for (int i = 1; i < r_Board.Length; i++)
             {
-                if (m_Sign[row, i] != sign)
+                if (r_Board[row, i] != sign)
                 {
                     return false;
                 }
             }
-            return sign != null;
+            return sign != eSquareValue.Empty;
         }
 
-        private bool CheckColumn(int i_Col)
+        private bool CheckSequanceInColumn(int i_Col)
         {
-            string sign = m_Sign[0, i_Col];
-            for (int i = 1; i < Size; i++)
+            eSquareValue sign = r_Board[0, i_Col];
+            for (int i = 1; i < r_Board.Length; i++)
             {
-                if (m_Sign[i, i_Col] != sign)
+                if (r_Board[i, i_Col] != sign)
                 {
                     return false;
                 }
             }
-            return sign != null;
+            return sign != eSquareValue.Empty;
         }
 
-        private bool CheckDiagonal()
+        private bool CheckSequanceInDiagonal()
         {
-            string sign = m_Sign[0, 0];
-            for (int i = 1; i < Size; i++)
+            eSquareValue sign = r_Board[0, 0];
+            for (int i = 1; i < r_Board.Length; i++)
             {
-                if (m_Sign[i, i] != sign)
+                if (r_Board[i, i] != sign)
                 {
                     return false;
                 }
             }
-            return sign != null;
+            return sign != eSquareValue.Empty;
         }
 
         private bool CheckAntiDiagonal()
         {
-            string sign = m_Sign[0, Size - 1];
-            for (int i = 1; i < Size; i++)
+            eSquareValue sign = r_Board[0, r_Board.Length - 1];
+            for (int i = 1; i < r_Board.Length; i++)
             {
-                if (m_Sign[i, Size - i - 1] != sign)
+                if (r_Board[i, r_Board.Length - i - 1] != sign)
                 {
                     return false;
                 }
             }
-            return sign != null;
+            return sign != eSquareValue.Empty;
         }
 
     }

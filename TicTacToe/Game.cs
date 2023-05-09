@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace TicTacToe
 {
@@ -16,14 +13,8 @@ namespace TicTacToe
         {
             m_Board = new Board(boardSize);
             m_Player1 = new Player("X", true);
-            if (isTwoPlayerGame)
-            {
-                m_Player2 = new Player("O", true);
-            }
-            else
-            {
-                m_Player2 = new Player("O", false);
-            }
+            m_Player2 = new Player("O", isTwoPlayerGame);
+
             m_CurrentPlayer = m_Player1;
         }
 
@@ -33,13 +24,23 @@ namespace TicTacToe
             {
                 GamePlay();
             }
+
             Console.WriteLine("Game over!");
-            Console.WriteLine(IsDraw() ? "It's a draw!" : $"{m_CurrentPlayer.Sign} won the game!");
+
+            if (IsDraw())
+            {
+                Console.WriteLine("It's a draw!");
+            }
+            else
+            {
+                Console.WriteLine($"{m_CurrentPlayer.Sign} won the game!");
+            }
         }
 
         private void GamePlay()
         {
             int x, y;
+
             do
             {
                 Console.WriteLine($"{m_CurrentPlayer.Sign}'s turn:");
@@ -47,6 +48,7 @@ namespace TicTacToe
                 x = ConsoleIO.ReadInt();
                 Console.Write("Enter y coordinate: ");
                 y = ConsoleIO.ReadInt();
+
                 if (!m_Board.IsEmpty(x, y))
                 {
                     Console.WriteLine("That cell is already occupied! Try again.");
@@ -54,6 +56,7 @@ namespace TicTacToe
             } while (!m_Board.IsEmpty(x, y));
 
             m_Board.Mark(x, y, m_CurrentPlayer.Sign);
+
             ConsoleIO.ClearScreen();
             ConsoleIO.PrintBoard(m_Board);
 
@@ -67,14 +70,18 @@ namespace TicTacToe
                 Random rand = new Random();
                 x = rand.Next(m_Board.Size);
                 y = rand.Next(m_Board.Size);
+
                 while (!m_Board.IsEmpty(x, y))
                 {
                     x = rand.Next(m_Board.Size);
                     y = rand.Next(m_Board.Size);
                 }
+
                 Console.WriteLine($"{m_CurrentPlayer.Sign}'s turn:");
                 Console.WriteLine($"Computer plays ({x}, {y})");
+
                 m_Board.Mark(x, y, m_CurrentPlayer.Sign);
+
                 ConsoleIO.ClearScreen();
                 ConsoleIO.PrintBoard(m_Board);
             }
@@ -92,5 +99,4 @@ namespace TicTacToe
             return m_Board.IsFull() && !m_Board.HasWinner();
         }
     }
-
 }

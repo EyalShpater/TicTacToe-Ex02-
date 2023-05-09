@@ -9,7 +9,8 @@ namespace TicTacToe
     {
         public static void Main()
         {
-            ConsoleIO.StartGame();
+            ConsoleIO game = new ConsoleIO();
+            game.StartGame();
         }
 
     }

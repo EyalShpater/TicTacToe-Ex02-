@@ -14,7 +14,7 @@ namespace TicTacToe
 
         public Board(int i_Size)
         {
-            r_Board = new eSquareValue[i_Size, i_Size];
+            m_Board = new eSquareValue[i_Size, i_Size];
         }
 
         public int Size
@@ -43,16 +43,16 @@ namespace TicTacToe
 
         public bool IsEmpty(int i_X, int i_Y)
         {
-            return r_Board[i_X, i_Y] == eSquareValue.Empty;
+            return m_Board[i_X, i_Y] == eSquareValue.Empty;
         }
 
         public bool IsFull()
         {
             bool result = true;
 
-            for (int x = 0; x < r_Board.Length; x++)
+            for (int x = 0; x < m_Board.Length; x++)
             {
-                for (int y = 0; y < r_Board.Length; y++)
+                for (int y = 0; y < m_Board.Length; y++)
                 {
                     if (IsEmpty(x, y))
                     {
@@ -67,7 +67,7 @@ namespace TicTacToe
 
         public bool HasWinner() // move to game
         {
-            for (int i = 0; i < r_Board.Length; i++)
+            for (int i = 0; i < m_Board.Length; i++)
             {
                 if (CheckSequanceInRow(i) || CheckSequanceInColumn(i))
                 {
@@ -80,10 +80,10 @@ namespace TicTacToe
 
         private bool CheckSequanceInRow(int row)
         {
-            eSquareValue sign = r_Board[row, 0];
-            for (int i = 1; i < r_Board.Length; i++)
+            eSquareValue sign = m_Board[row, 0];
+            for (int i = 1; i < m_Board.Length; i++)
             {
-                if (r_Board[row, i] != sign)
+                if (m_Board[row, i] != sign)
                 {
                     return false;
                 }
@@ -93,10 +93,10 @@ namespace TicTacToe
 
         private bool CheckSequanceInColumn(int i_Col)
         {
-            eSquareValue sign = r_Board[0, i_Col];
-            for (int i = 1; i < r_Board.Length; i++)
+            eSquareValue sign = m_Board[0, i_Col];
+            for (int i = 1; i < m_Board.Length; i++)
             {
-                if (r_Board[i, i_Col] != sign)
+                if (m_Board[i, i_Col] != sign)
                 {
                     return false;
                 }
@@ -106,10 +106,10 @@ namespace TicTacToe
 
         private bool CheckSequanceInDiagonal()
         {
-            eSquareValue sign = r_Board[0, 0];
-            for (int i = 1; i < r_Board.Length; i++)
+            eSquareValue sign = m_Board[0, 0];
+            for (int i = 1; i < m_Board.Length; i++)
             {
-                if (r_Board[i, i] != sign)
+                if (m_Board[i, i] != sign)
                 {
                     return false;
                 }
@@ -119,10 +119,10 @@ namespace TicTacToe
 
         private bool CheckAntiDiagonal()
         {
-            eSquareValue sign = r_Board[0, r_Board.Length - 1];
-            for (int i = 1; i < r_Board.Length; i++)
+            eSquareValue sign = m_Board[0, m_Board.Length - 1];
+            for (int i = 1; i < m_Board.Length; i++)
             {
-                if (r_Board[i, r_Board.Length - i - 1] != sign)
+                if (m_Board[i, m_Board.Length - i - 1] != sign)
                 {
                     return false;
                 }

@@ -48,14 +48,14 @@ namespace TicTacToe
         {
             return m_CurrentPlayerTurn.Id == Player.ePlayerId.Computer;
         }
-        public void Start()
-        {
-            while (!IsGameOver())
-            {
-                PlayTurn();
-            }
+        //public void Start()
+        //{
+        //    while (!IsGameOver())
+        //    {
+        //        PlayTurn();
+        //    }
 
-        }
+        //}
 
         public bool MarkSquare(int i_X,int i_Y)
         {
@@ -94,8 +94,6 @@ namespace TicTacToe
 
             m_Board.MarkSquare(x, y, sign);
 
-            ConsoleIO.ClearScreen();
-            ConsoleIO.PrintBoard(m_Board);
         }
         public bool IsGameOver()
         {

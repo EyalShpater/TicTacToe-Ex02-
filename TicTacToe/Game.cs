@@ -33,37 +33,15 @@ namespace TicTacToe
             }
             else
             {
-                Console.WriteLine($"{m_CurrentPlayer.Sign} won the game!");
+                Player gameWinner = m_CurrentPlayer == m_Player1 ? m_Player2 : m_Player1;
+
+                Console.WriteLine($"{gameWinner.Sign} won the game!");
             }
         }
 
         private void GamePlay()
         {
             int x, y;
-
-            do
-            {
-                Console.WriteLine($"{m_CurrentPlayer.Sign}'s turn:");
-                Console.Write("Enter x coordinate: ");
-                x = ConsoleIO.ReadInt();
-                Console.Write("Enter y coordinate: ");
-                y = ConsoleIO.ReadInt();
-
-                if (!m_Board.IsEmpty(x, y))
-                {
-                    Console.WriteLine("That cell is already occupied! Try again.");
-                }
-            } while (!m_Board.IsEmpty(x, y));
-
-            m_Board.Mark(x, y, m_CurrentPlayer.Sign);
-
-            ConsoleIO.ClearScreen();
-            ConsoleIO.PrintBoard(m_Board);
-
-            if (IsGameOver())
-            {
-                return;
-            }
 
             if (!m_CurrentPlayer.IsHuman)
             {
@@ -85,6 +63,35 @@ namespace TicTacToe
                 ConsoleIO.ClearScreen();
                 ConsoleIO.PrintBoard(m_Board);
             }
+            else
+            {
+                do
+                {
+                    Console.WriteLine($"{m_CurrentPlayer.Sign}'s turn:");
+                    Console.Write("Enter x coordinate: ");
+                    x = ConsoleIO.ReadInt();
+                    Console.Write("Enter y coordinate: ");
+                    y = ConsoleIO.ReadInt();
+
+                    if (!m_Board.IsEmpty(x, y))
+                    {
+                        Console.WriteLine("That cell is already occupied! Try again.");
+                    }
+                } while (!m_Board.IsEmpty(x, y));
+            }
+            
+
+            m_Board.Mark(x, y, m_CurrentPlayer.Sign);
+
+            ConsoleIO.ClearScreen();
+            ConsoleIO.PrintBoard(m_Board);
+
+            if (IsGameOver())
+            {
+                return;
+            }
+
+            
 
             m_CurrentPlayer = m_CurrentPlayer == m_Player1 ? m_Player2 : m_Player1;
         }

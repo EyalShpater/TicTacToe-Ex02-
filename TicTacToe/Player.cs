@@ -7,22 +7,23 @@ namespace TicTacToe
 {
     public class Player
     {
-        private readonly string m_sign;
-        private readonly bool m_isHuman;
-        public Player(string i_sign, bool i_isHuman)
+        private readonly string m_Sign; // id
+        private readonly bool m_IsHuman;
+
+        public Player(string i_Sign, bool i_IsHuman)
         {
-            m_sign = i_sign;
-            m_isHuman = i_isHuman;
+            m_Sign = i_Sign;
+            m_IsHuman = i_IsHuman;
         }
         
         public string Sign
         {
-            get { return m_sign; }
+            get { return m_Sign; }
         }
 
         public bool IsHuman
         {
-            get { return m_isHuman; }
+            get { return m_IsHuman; }
         }
     }
 }

@@ -9,9 +9,7 @@ namespace TicTacToe
     {
         public static void Main()
         {
-            Console.WriteLine("Welcome to Tic Tac Toe!");
-
-            ConsoleIO.PromptForGameSetup(out int boardSize, out bool isTwoPlayerGame);
+            ConsoleIO.GetDataForGameSetup(out int boardSize, out bool isTwoPlayerGame);
 
             // Create a new TicTacToe game and start it
             Game game = new Game(boardSize, isTwoPlayerGame);

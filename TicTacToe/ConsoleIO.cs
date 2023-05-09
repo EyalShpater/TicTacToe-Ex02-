@@ -27,8 +27,9 @@ namespace TicTacToe
             Console.WriteLine();
         }
 
-        public static void PromptForGameSetup(out int boardSize, out bool isTwoPlayerGame)
+        public static void GetDataForGameSetup(out int boardSize, out bool isTwoPlayerGame)
         {
+            Console.WriteLine("Welcome to Tic Tac Toe!");
             Console.Write("Enter board size: ");
             boardSize = ReadInt();
             Console.Write("Enter 1 for one-player game or 2 for two-player game: ");

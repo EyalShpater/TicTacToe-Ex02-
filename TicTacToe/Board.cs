@@ -7,8 +7,8 @@ namespace TicTacToe
 {
     public class Board
     {
-        public readonly string[,] m_Sign;
-        public readonly int Size;
+        public readonly string[,] m_Sign; //enum
+        public readonly int Size; //delete
 
         public Board(int size)
         {
@@ -16,7 +16,7 @@ namespace TicTacToe
             m_Sign = new string[size, size];
         }
 
-        public void Mark(int x, int y, string sign)
+        public void Mark(int x, int y, string sign) //
         {
             m_Sign[x, y] = sign;
         }
@@ -50,6 +50,7 @@ namespace TicTacToe
                     return true;
                 }
             }
+
             return CheckDiagonal() || CheckAntiDiagonal();
         }
 
@@ -66,12 +67,12 @@ namespace TicTacToe
             return sign != null;
         }
 
-        private bool CheckColumn(int col)
+        private bool CheckColumn(int i_Col)
         {
-            string sign = m_Sign[0, col];
+            string sign = m_Sign[0, i_Col];
             for (int i = 1; i < Size; i++)
             {
-                if (m_Sign[i, col] != sign)
+                if (m_Sign[i, i_Col] != sign)
                 {
                     return false;
                 }

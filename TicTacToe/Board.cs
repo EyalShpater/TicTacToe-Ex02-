@@ -5,9 +5,11 @@ using System.Text;
 
 namespace TicTacToe
 {
+
     public class Board
     {
-        public readonly string[,] m_Sign; //enum
+
+        public readonly Player.ePlayerType[,] m_Sign; //enum
         public readonly int Size; //delete
 
         public Board(int size)

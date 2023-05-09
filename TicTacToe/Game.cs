@@ -57,6 +57,25 @@ namespace TicTacToe
 
         }
 
+        public bool MarkSquare(int i_X,int i_Y)
+        {
+            Board.eSquareValue sign = convertEplayerToESquareValue(m_CurrentPlayerTurn);
+            return m_Board.MarkSquare(i_X, i_Y,sign);
+        }
+
+        private Board.eSquareValue convertEplayerToESquareValue (Player i_Player)
+        {
+            Board.eSquareValue res;
+            if (i_Player.Id==Player.ePlayerId.Player1)
+            {
+                res = Board.eSquareValue.Player1;
+            }
+            else
+            {
+                res = Board.eSquareValue.Player2;
+            }
+            return res;
+        }
 
 
         public void PlayAsComputer()

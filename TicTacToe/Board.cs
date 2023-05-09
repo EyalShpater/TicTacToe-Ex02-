@@ -30,9 +30,15 @@ namespace TicTacToe
             return m_Board[i_X, i_Y];
         }
 
-        public void MarkSquare(int i_X, int i_Y, eSquareValue i_Sign)
+        public bool MarkSquare(int i_X, int i_Y, eSquareValue i_Sign)
         {
-            m_Board[i_X, i_Y] = i_Sign;
+            bool res = false;
+            if(IsEmpty(i_X,i_Y))
+            {
+                m_Board[i_X, i_Y] = i_Sign;
+                res = true;
+            }
+            return res;
         }
 
         public bool IsEmpty(int i_X, int i_Y)

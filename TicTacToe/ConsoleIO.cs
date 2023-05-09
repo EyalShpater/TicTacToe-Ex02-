@@ -87,43 +87,31 @@ namespace TicTacToe
             GetDataForGameSetup();
             while (!m_Game.IsGameOver())
             {
-                PrintBoard(m_Game);
+                PrintBoard();
                 if (m_Game.IsComputerTurn())
                 { 
                    m_Game.PlayAsComputer();
                 }
                 else
                 {
-                    playAsPlayer(m_Game);
+                    playAsPlayer();
                 }
-
+                ClearScreen();
             }
 
-
-
-
-
-
-            Console.WriteLine("Game Over!");
-
-            if (m_Game.IsDraw())
-            {
-                Console.WriteLine("It's a draw!");
-            }
-            else
-            {
-                Console.WriteLine($"{m_Game.Winner.Id} won the game!");
-            }
+            GameOver();
         }
 
-        private void playAsPlayer(Game i_Game)
+        private void playAsPlayer()
         {
-            getCoordinate(out int x, out int y,i_Game.BoardSize);
-            bool isTurnCompleted = i_Game.PlayTurn(x, y);
+
+            getCoordinate(out int x, out int y,m_Game.BoardSize);
+            bool isTurnCompleted = m_Game.MarkSquare(x, y);
             while(!isTurnCompleted)
             {
-                getCoordinate(out x,out y, i_Game.BoardSize);
-                isTurnCompleted = i_Game.PlayTurn(x, y);
+                Console.WriteLine("Couldn't mark the selected square"); 
+                getCoordinate(out x,out y, m_Game.BoardSize);
+                isTurnCompleted = m_Game.MarkSquare(x, y);
             }
 
         }
@@ -151,8 +139,18 @@ namespace TicTacToe
             return !(i_X < 0 || i_X >= i_BoardSize || i_Y < 0 || i_Y >= i_BoardSize);
         }
 
-        public static void GameOver()
+        public void GameOver()
         {
+            Console.WriteLine("Game Over!");
+
+            if (m_Game.IsDraw())
+            {
+                Console.WriteLine("It's a draw!");
+            }
+            else
+            {
+                Console.WriteLine($"{m_Game.Winner.Id} won the game!");
+            }
         }
     }
     

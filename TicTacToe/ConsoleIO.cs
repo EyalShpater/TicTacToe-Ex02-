@@ -7,6 +7,10 @@ namespace TicTacToe
 {
     class ConsoleIO
     {
+        private const char player1Sign = 'X';
+        private const char player2Sign = 'O';
+        private const char emptySquare = ' ';
+
         private Game m_Game;
 
         public ConsoleIO ()
@@ -14,10 +18,9 @@ namespace TicTacToe
             m_Game = null;
         }
 
-        public enum ePlayerSign { Player1 = 'X',Player2 = 'O'};
         public void ClearScreen()
         {
-            Console.Clear();
+            Ex02.ConsoleUtils.Screen.Clear();
         }
 
         public void PrintBoard()
@@ -45,15 +48,15 @@ namespace TicTacToe
 
         private char convertESquareValueToChar(Board.eSquareValue eSign)
         {
-            char res = ' ';
+            char res = emptySquare;
 
             switch (eSign)
             {
                 case Board.eSquareValue.Player1:
-                    res = 'X';
+                    res = player1Sign;
                     break;
                 case Board.eSquareValue.Player2:
-                    res = 'O';
+                    res = player2Sign;
                     break;
             }
 
@@ -63,22 +66,27 @@ namespace TicTacToe
 
         public void GetDataForGameSetup()
         {
+            int boardSize;
+            bool isTwoPlayerGame;
+
             Console.WriteLine("Welcome to Tic Tac Toe!");
             Console.Write("Enter board size: ");
-            int boardSize = ReadInt();
+            boardSize = readInt();
             Console.Write("Enter 1 for one-player game or 2 for two-player game: ");
-            bool isTwoPlayerGame = ReadInt() == 2;
+            isTwoPlayerGame = readInt() == 2;
 
             m_Game = new Game(boardSize, isTwoPlayerGame);
         }
 
-        public static int ReadInt()
+        private static int readInt()
         {
             int result;
+
             while (!int.TryParse(Console.ReadLine(), out result))
             {
                 Console.WriteLine("Invalid input! Try again.");
             }
+
             return result;
         }
 
@@ -97,6 +105,7 @@ namespace TicTacToe
                 {
                     playAsPlayer();
                 }
+
                 ClearScreen();
             }
 
@@ -105,40 +114,41 @@ namespace TicTacToe
 
         private void playAsPlayer()
         {
+            int x, y;
+            bool isTurnCompleted;
 
-            getCoordinate(out int x, out int y,m_Game.BoardSize);
-            bool isTurnCompleted = m_Game.MarkSquare(x, y);
+            getCoordinate(out x, out y, m_Game.BoardSize);
+            isTurnCompleted = m_Game.MarkSquare(x, y);
             while(!isTurnCompleted)
             {
                 Console.WriteLine("Couldn't mark the selected square"); 
                 getCoordinate(out x,out y, m_Game.BoardSize);
                 isTurnCompleted = m_Game.MarkSquare(x, y);
             }
-
         }
 
         private void getCoordinate(out int x, out int y,int i_BoardSize)
         {
             Console.WriteLine("s turn:");
             Console.Write("Enter x coordinate: ");
-            x = ReadInt();            
+            x = readInt();            
             Console.Write("Enter y coordinate: ");
-            y = ReadInt();
-            while (!isValidCoordinate(x,y,i_BoardSize))
-            {
-                Console.WriteLine("Invalid x,y coordinates");
-                Console.Write("Enter x coordinate: ");
-                x = ReadInt();
-                Console.Write("Enter y coordinate: ");
-                y = ReadInt();
-            }
+            y = readInt();
+            //while (!isValidCoordinate(x,y,i_BoardSize))
+            //{
+            //    Console.WriteLine("Invalid x,y coordinates");
+            //    Console.Write("Enter x coordinate: ");
+            //    x = readInt();
+            //    Console.Write("Enter y coordinate: ");
+            //    y = readInt();
+            //}
         }
 
-        private bool isValidCoordinate(int i_X,int i_Y,int i_BoardSize)
-        {
+        //private bool isValidCoordinate(int i_X,int i_Y,int i_BoardSize) // can be deleted, game checks that
+        //{
 
-            return !(i_X < 0 || i_X >= i_BoardSize || i_Y < 0 || i_Y >= i_BoardSize);
-        }
+        //    return !(i_X < 0 || i_X >= i_BoardSize || i_Y < 0 || i_Y >= i_BoardSize);
+        //}
 
         public void GameOver()
         {

@@ -59,10 +59,22 @@ namespace TicTacToe
         public bool MarkSquare(int i_X,int i_Y)
         {
             Board.eSquareValue sign = convertEPlayerToESquareValue(m_CurrentPlayerTurn);
+            bool successMark = m_Board.MarkSquare(i_X, i_Y, sign);
 
-            return m_Board.MarkSquare(i_X, i_Y, sign);
+            if (successMark)
+            {
+                switchBetweenCurrentPlayer();
+            }
+
+            return successMark;
         }
 
+        private void switchBetweenCurrentPlayer()
+        {
+            bool isCurrentPlayerIsOne = m_CurrentPlayerTurn == r_Player1;
+
+            m_CurrentPlayerTurn = isCurrentPlayerIsOne ? r_Player2 : r_Player1;
+        }
         private Board.eSquareValue convertEPlayerToESquareValue (Player i_Player)
         {
             Board.eSquareValue res;
@@ -88,13 +100,13 @@ namespace TicTacToe
             x = rand.Next(m_Board.Size);
             y = rand.Next(m_Board.Size);
 
-            while (!m_Board.MarkSquare(x, y, sign))// is readble? (!m_Board.IsEmpty(x, y))
+            while (!MarkSquare(x, y))// is readble? (!m_Board.IsEmpty(x, y))
             {
                 x = rand.Next(m_Board.Size);
                 y = rand.Next(m_Board.Size);
             }
 
-            m_Board.MarkSquare(x, y, sign);
+            MarkSquare(x, y);
         }
 
         public bool IsGameOver()

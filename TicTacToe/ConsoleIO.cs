@@ -88,8 +88,7 @@ namespace TicTacToe
             return res;
         }
 
-
-        public void GetDataForGameSetup()
+        private void getDataForGameSetupAndInitGame()
         {
             int boardSize;
             bool isTwoPlayerGame;
@@ -117,10 +116,10 @@ namespace TicTacToe
 
         public void StartGame()
         {
-            GetDataForGameSetup();
-            clearScreen();
+            getDataForGameSetupAndInitGame();
             while (!m_Game.IsGameOver())
             {
+                clearScreen();
                 printBoard();
                 if (m_Game.IsComputerTurn())
                 { 
@@ -131,7 +130,7 @@ namespace TicTacToe
                     playAsPlayer();
                 }
 
-                clearScreen();
+                //need to check win
             }
 
             GameOver();

@@ -16,10 +16,9 @@ namespace TicTacToe
             m_Id = i_Id;
         }
 
-        public ePlayerId Id
+        public ePlayerId Id 
         {
             get { return m_Id; }
         }
-
     }
 }

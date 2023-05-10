@@ -21,7 +21,7 @@ namespace TicTacToe
         {
             get
             {
-                return m_Board.Length;
+                return m_Board.GetLength(0);
             }
         }
 
@@ -50,9 +50,9 @@ namespace TicTacToe
         {
             bool result = true;
 
-            for (int x = 0; x < m_Board.Length; x++)
+            for (int x = 0; x < m_Board.GetLength(0); x++)
             {
-                for (int y = 0; y < m_Board.Length; y++)
+                for (int y = 0; y < m_Board.GetLength(0); y++)
                 {
                     if (IsEmpty(x, y))
                     {
@@ -67,7 +67,7 @@ namespace TicTacToe
 
         public bool HasWinner() // move to game
         {
-            for (int i = 0; i < m_Board.Length; i++)
+            for (int i = 0; i < m_Board.GetLength(0); i++)
             {
                 if (CheckSequanceInRow(i) || CheckSequanceInColumn(i))
                 {
@@ -81,7 +81,7 @@ namespace TicTacToe
         private bool CheckSequanceInRow(int row)
         {
             eSquareValue sign = m_Board[row, 0];
-            for (int i = 1; i < m_Board.Length; i++)
+            for (int i = 1; i < m_Board.GetLength(0); i++)
             {
                 if (m_Board[row, i] != sign)
                 {
@@ -94,7 +94,7 @@ namespace TicTacToe
         private bool CheckSequanceInColumn(int i_Col)
         {
             eSquareValue sign = m_Board[0, i_Col];
-            for (int i = 1; i < m_Board.Length; i++)
+            for (int i = 1; i < m_Board.GetLength(0); i++)
             {
                 if (m_Board[i, i_Col] != sign)
                 {
@@ -107,7 +107,7 @@ namespace TicTacToe
         private bool CheckSequanceInDiagonal()
         {
             eSquareValue sign = m_Board[0, 0];
-            for (int i = 1; i < m_Board.Length; i++)
+            for (int i = 1; i < m_Board.GetLength(0); i++)
             {
                 if (m_Board[i, i] != sign)
                 {
@@ -119,10 +119,10 @@ namespace TicTacToe
 
         private bool CheckAntiDiagonal()
         {
-            eSquareValue sign = m_Board[0, m_Board.Length - 1];
-            for (int i = 1; i < m_Board.Length; i++)
+            eSquareValue sign = m_Board[0, m_Board.GetLength(0) - 1];
+            for (int i = 1; i < m_Board.GetLength(0); i++)
             {
-                if (m_Board[i, m_Board.Length - i - 1] != sign)
+                if (m_Board[i, m_Board.GetLength(0) - i - 1] != sign)
                 {
                     return false;
                 }

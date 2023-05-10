@@ -23,25 +23,25 @@ namespace TicTacToe
         public void PrintBoard()
         {
             Console.Write(" ");
-            for (int i = 0; i< m_Game.BoardSize;i++)
+            for (int i = 0; i < m_Game.BoardSize; i++)
             {
-                Console.Write(i + 1+" ");
+                Console.Write(i + 1 + " ");
             }
             Console.WriteLine();
 
             for (int i = 0; i < m_Game.BoardSize; i++)
             {
-                Console.Write(i+1);
+                Console.Write(i + 1);
                 for (int j = 0; j < m_Game.BoardSize; j++)
                 {
                     Board.eSquareValue eSign = m_Game.GetSignByCoordinates(i, j);
                     char chSign = convertESquareValueToChar(eSign);
-                    Console.Write(chSign);
+                    Console.Write(" " + chSign);
                 }
+                Console.WriteLine(); // add a newline character after each row
             }
-
-
         }
+
 
         private char convertESquareValueToChar(Board.eSquareValue eSign)
         {
@@ -85,6 +85,7 @@ namespace TicTacToe
         public void StartGame()
         {
             GetDataForGameSetup();
+            ClearScreen();
             while (!m_Game.IsGameOver())
             {
                 PrintBoard();

@@ -31,11 +31,11 @@ namespace TicTacToe
 
         public bool MarkSquare(int i_X, int i_Y, eSquareValue i_Sign)
         {
-            bool canMark = isValidSquareToMark(i_X, i_Y);
+            bool canMark = isValidSquareToMark(i_X - 1, i_Y - 1);
 
             if(canMark)
             {
-                m_Board[i_X, i_Y] = i_Sign;
+                m_Board[i_X - 1, i_Y - 1] = i_Sign;
             }
 
             return canMark;
@@ -53,7 +53,7 @@ namespace TicTacToe
 
         private bool isValidCoordinateValue(int i_Value) 
         {
-            return i_Value >= 1 && i_Value <= this.Size;
+            return i_Value >= 0 && i_Value < this.Size;
         }
 
         public bool AreAllSquaresMarked() 

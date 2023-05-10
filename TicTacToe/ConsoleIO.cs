@@ -18,33 +18,58 @@ namespace TicTacToe
             m_Game = null;
         }
 
-        public void ClearScreen()
+        private void clearScreen()
         {
             Ex02.ConsoleUtils.Screen.Clear();
         }
 
-        public void PrintBoard()
+        private void printBoard()
         {
-            Console.Write(" ");
-            for (int i = 0; i < m_Game.BoardSize; i++)
-            {
-                Console.Write(i + 1 + " ");
-            }
-            Console.WriteLine();
+            printLineOfNumbers();
 
             for (int i = 0; i < m_Game.BoardSize; i++)
             {
-                Console.Write(i + 1);
-                for (int j = 0; j < m_Game.BoardSize; j++)
-                {
-                    Board.eSquareValue eSign = m_Game.GetSignByCoordinates(i, j);
-                    char chSign = convertESquareValueToChar(eSign);
-                    Console.Write(" " + chSign);
-                }
+                printRowOfBoard(i);
+                printLineBuffer();
                 Console.WriteLine(); // add a newline character after each row
             }
         }
 
+        private void printLineOfNumbers()
+        {
+            Console.Write(" ");
+            for (int i = 0; i < m_Game.BoardSize; i++)
+            {
+                Console.Write("  " + (i + 1) + " ");
+            }
+
+            Console.WriteLine();
+        }
+
+        private void printLineBuffer()
+        {
+            Console.Write(" ");
+            for (int i = 0; i < m_Game.BoardSize; i++)
+            {
+                Console.Write("====");
+            }
+
+            Console.WriteLine("=");
+        }
+
+        private void printRowOfBoard(int i_RowIndex)
+        {
+            Console.Write(i_RowIndex + 1 + "|");
+            for (int i = 0; i < m_Game.BoardSize; i++)
+            {
+                Board.eSquareValue eSign = m_Game.GetSignByCoordinates(i_RowIndex, i);
+                char chSign = convertESquareValueToChar(eSign);
+
+                Console.Write(" " + chSign + " |");
+            }
+
+            Console.WriteLine();
+        }
 
         private char convertESquareValueToChar(Board.eSquareValue eSign)
         {
@@ -93,10 +118,10 @@ namespace TicTacToe
         public void StartGame()
         {
             GetDataForGameSetup();
-            ClearScreen();
+            clearScreen();
             while (!m_Game.IsGameOver())
             {
-                PrintBoard();
+                printBoard();
                 if (m_Game.IsComputerTurn())
                 { 
                    m_Game.PlayAsComputer();
@@ -106,7 +131,7 @@ namespace TicTacToe
                     playAsPlayer();
                 }
 
-                ClearScreen();
+                clearScreen();
             }
 
             GameOver();

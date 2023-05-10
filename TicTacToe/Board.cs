@@ -26,7 +26,7 @@ namespace TicTacToe
 
         public eSquareValue GetSquareValue(int i_X, int i_Y)
         {
-            return m_Board[i_X, i_Y];
+            return m_Board[i_X - 1, i_Y - 1];
         }
 
         public bool MarkSquare(int i_X, int i_Y, eSquareValue i_Sign)
@@ -43,12 +43,12 @@ namespace TicTacToe
 
         private bool isEmptySquare(int i_X, int i_Y) 
         {
-            return m_Board[i_X, i_Y] == eSquareValue.Empty;
+            return m_Board[i_X - 1, i_Y - 1] == eSquareValue.Empty;
         }
 
         private bool isValidSquareToMark(int i_X, int i_Y) 
         {
-            return isValidCoordinateValue(i_X) && isValidCoordinateValue(i_Y) && isEmptySquare(i_X, i_Y);
+            return isValidCoordinateValue(i_X - 1) && isValidCoordinateValue(i_Y - 1) && isEmptySquare(i_X - 1, i_Y - 1);
         }
 
         private bool isValidCoordinateValue(int i_Value) 
@@ -77,7 +77,7 @@ namespace TicTacToe
 
         public bool IsSequance(int i_X, int i_Y) // move to game
         {
-            return CheckSequanceInDiagonal() || CheckAntiDiagonal() || CheckSequanceInRow(i_X) || CheckSequanceInColumn(i_Y);
+            return CheckSequanceInDiagonal() || CheckAntiDiagonal() || CheckSequanceInRow(i_X - 1) || CheckSequanceInColumn(i_Y - 1);
         }
 
         private bool CheckSequanceInRow(int i_Row) // public so the game can use it? 

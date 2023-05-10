@@ -86,15 +86,15 @@ namespace TicTacToe
             x = rand.Next(m_Board.Size);
             y = rand.Next(m_Board.Size);
 
-            while (!m_Board.IsEmpty(x, y))
+            while (!m_Board.MarkSquare(x, y, sign))// is readble? (!m_Board.IsEmpty(x, y))
             {
                 x = rand.Next(m_Board.Size);
                 y = rand.Next(m_Board.Size);
             }
 
             m_Board.MarkSquare(x, y, sign);
-
         }
+
         public bool IsGameOver()
         {
             return m_Board.IsFull() || m_Board.HasWinner();

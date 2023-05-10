@@ -5,7 +5,6 @@ using System.Text;
 
 namespace TicTacToe
 {
-
     public class Board
     {
         public enum eSquareValue { Empty, Player1, Player2 };
@@ -32,39 +31,51 @@ namespace TicTacToe
 
         public bool MarkSquare(int i_X, int i_Y, eSquareValue i_Sign)
         {
-            bool res = false;
-            if(IsEmpty(i_X,i_Y))
+            bool canMark = isValidSquareToMark(i_X, i_Y);
+
+            if(canMark)
             {
                 m_Board[i_X, i_Y] = i_Sign;
-                res = true;
             }
-            return res;
+
+            return canMark;
         }
 
-        public bool IsEmpty(int i_X, int i_Y)
+        private bool isEmptySquare(int i_X, int i_Y) // changed to private
         {
             return m_Board[i_X, i_Y] == eSquareValue.Empty;
         }
 
-        public bool IsFull()
+        private bool isValidSquareToMark(int i_X, int i_Y) // added
         {
-            bool result = true;
+            return isValidCoordinateValue(i_X) && isValidCoordinateValue(i_Y) && isEmptySquare(i_X, i_Y);
+        }
 
-            for (int x = 0; x < m_Board.GetLength(0); x++)
+        private bool isValidCoordinateValue(int i_Value) // added
+        {
+            return i_Value >= 1 && i_Value <= m_Board.Length;
+        }
+
+        public bool IsFull() // change to private, maybe change the neme to "areAllSquaresMarked"
+        {
+            bool allMarked = true;
+
+            for (int x = 0; x < m_Board.Length && allMarked; x++)
             {
-                for (int y = 0; y < m_Board.GetLength(0); y++)
+                for (int y = 0; y < m_Board.Length; y++)
                 {
-                    if (IsEmpty(x, y))
+                    if (isEmptySquare(x, y))
                     {
-                        result = false;
+                        allMarked = false;
                         break;
                     }
                 }
             }
 
-            return result;
+            return allMarked;
         }
 
+        // I think it should get (x, y) and check it for the specific coordinate
         public bool HasWinner() // move to game
         {
             for (int i = 0; i < m_Board.GetLength(0); i++)
@@ -78,56 +89,61 @@ namespace TicTacToe
             return CheckSequanceInDiagonal() || CheckAntiDiagonal();
         }
 
-        private bool CheckSequanceInRow(int row)
+        // maybe we can unite the sequance check functions?
+
+        private bool CheckSequanceInRow(int i_Row) // public so the game can use it? 
         {
             eSquareValue sign = m_Board[row, 0];
-            for (int i = 1; i < m_Board.GetLength(0); i++)
+            for (int i = 1; i < m_Board.Length; i++)
             {
-                if (m_Board[row, i] != sign)
+                if (m_Board[i_Row, i] != sign)
                 {
-                    return false;
+                    isAllRowTheSameSign = false;
                 }
             }
-            return sign != eSquareValue.Empty;
+
+            return isAllRowTheSameSign;
         }
 
         private bool CheckSequanceInColumn(int i_Col)
         {
             eSquareValue sign = m_Board[0, i_Col];
-            for (int i = 1; i < m_Board.GetLength(0); i++)
+            for (int i = 1; i < m_Board.Length; i++)
             {
                 if (m_Board[i, i_Col] != sign)
                 {
-                    return false;
+                    isAllColumnTheSameSign = false;
                 }
             }
-            return sign != eSquareValue.Empty;
+
+            return isAllColumnTheSameSign;
         }
 
         private bool CheckSequanceInDiagonal()
         {
             eSquareValue sign = m_Board[0, 0];
-            for (int i = 1; i < m_Board.GetLength(0); i++)
+            for (int i = 1; i < m_Board.Length; i++)
             {
                 if (m_Board[i, i] != sign)
                 {
-                    return false;
+                    isAllDiagTheSameSign = false;
                 }
             }
-            return sign != eSquareValue.Empty;
+            return isAllDiagTheSameSign;
         }
 
         private bool CheckAntiDiagonal()
         {
-            eSquareValue sign = m_Board[0, m_Board.GetLength(0) - 1];
-            for (int i = 1; i < m_Board.GetLength(0); i++)
+            eSquareValue sign = m_Board[0, m_Board.Length - 1];
+            for (int i = 1; i < m_Board.Length; i++)
             {
                 if (m_Board[i, m_Board.GetLength(0) - i - 1] != sign)
                 {
-                    return false;
+                    isAllDiagTheSameSign = false;
                 }
             }
-            return sign != eSquareValue.Empty;
+
+            return isAllDiagTheSameSign;
         }
 
     }

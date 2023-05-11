@@ -131,6 +131,8 @@ namespace ConsoleUserInterface
                     playAsPlayer();
                 }
             }
+            clearScreen();
+            printBoard();
 
             GameOver();
         }

@@ -130,8 +130,6 @@ namespace ConsoleUserInterface
                 {
                     playAsPlayer();
                 }
-
-                //need to check win
             }
 
             GameOver();
@@ -175,6 +173,8 @@ namespace ConsoleUserInterface
             {
                 Console.WriteLine($"{m_Game.Winner.Id} won the game!");
             }
+
+            Console.Read();
         }
     }
 

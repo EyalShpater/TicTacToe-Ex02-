@@ -11,7 +11,7 @@ namespace TicTacToe
 
         private readonly ePlayerId m_Id;
 
-        public Player(ePlayerId i_Id)
+        internal Player(ePlayerId i_Id)
         {
             m_Id = i_Id;
         }

@@ -39,14 +39,6 @@ namespace TicTacToe
             }
         }
 
-        //internal Player CurrentplayerTurn
-        //{
-        //    get
-        //    {
-        //        return m_CurrentPlayerTurn;
-        //    }
-        //}
-
         public Board.eSquareValue GetSignByCoordinates(int i_X, int i_Y)
         {
             return m_Board.GetSquareValue(i_X, i_Y);

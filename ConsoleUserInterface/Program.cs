@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TicTacToe
+namespace ConsoleUserInterface
 {
-    internal class Program
+    public class Program
     {
         public static void Main()
         {

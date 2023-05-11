@@ -75,6 +75,7 @@ namespace TicTacToe
 
             m_CurrentPlayerTurn = isCurrentPlayerIsOne ? r_Player2 : r_Player1;
         }
+
         private Board.eSquareValue convertEPlayerToESquareValue (Player i_Player)
         {
             Board.eSquareValue res;

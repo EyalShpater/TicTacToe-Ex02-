@@ -1,9 +1,10 @@
 ﻿using System;
+using TicTacToe;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TicTacToe
+namespace ConsoleUserInterface
 {
     class ConsoleIO
     {
@@ -13,7 +14,7 @@ namespace TicTacToe
 
         private Game m_Game;
 
-        public ConsoleIO ()
+        public ConsoleIO()
         {
             m_Game = null;
         }
@@ -122,8 +123,8 @@ namespace TicTacToe
                 clearScreen();
                 printBoard();
                 if (m_Game.IsComputerTurn())
-                { 
-                   m_Game.PlayAsComputer();
+                {
+                    m_Game.PlayAsComputer();
                 }
                 else
                 {
@@ -141,38 +142,26 @@ namespace TicTacToe
             int x, y;
             bool isTurnCompleted;
 
-            getCoordinate(out x, out y, m_Game.BoardSize);
+            getCoordinate(out x, out y);
             isTurnCompleted = m_Game.MarkSquare(x, y);
-            while(!isTurnCompleted)
+            while (!isTurnCompleted)
             {
-                Console.WriteLine("Couldn't mark the selected square"); 
-                getCoordinate(out x,out y, m_Game.BoardSize);
+                Console.WriteLine("Couldn't mark the selected square");
+                getCoordinate(out x, out y);
                 isTurnCompleted = m_Game.MarkSquare(x, y);
             }
         }
 
-        private void getCoordinate(out int x, out int y,int i_BoardSize)
+        private void getCoordinate(out int x, out int y) // check if enter 'q' and make it more readability
         {
             Console.WriteLine("s turn:");
             Console.Write("Enter x coordinate: ");
-            x = readInt();            
+            x = readInt();
             Console.Write("Enter y coordinate: ");
             y = readInt();
-            //while (!isValidCoordinate(x,y,i_BoardSize))
-            //{
-            //    Console.WriteLine("Invalid x,y coordinates");
-            //    Console.Write("Enter x coordinate: ");
-            //    x = readInt();
-            //    Console.Write("Enter y coordinate: ");
-            //    y = readInt();
-            //}
+            x--;
+            y--;
         }
-
-        //private bool isValidCoordinate(int i_X,int i_Y,int i_BoardSize) // can be deleted, game checks that
-        //{
-
-        //    return !(i_X < 0 || i_X >= i_BoardSize || i_Y < 0 || i_Y >= i_BoardSize);
-        //}
 
         public void GameOver()
         {
@@ -188,6 +177,6 @@ namespace TicTacToe
             }
         }
     }
-    
+
 
 }

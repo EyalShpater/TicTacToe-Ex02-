@@ -26,16 +26,16 @@ namespace TicTacToe
 
         public eSquareValue GetSquareValue(int i_X, int i_Y)
         {
-            return m_Board[i_X - 1, i_Y - 1];
+            return m_Board[i_X, i_Y];
         }
 
         public bool MarkSquare(int i_X, int i_Y, eSquareValue i_Sign)
         {
-            bool canMark = isValidSquareToMark(i_X - 1, i_Y - 1);
+            bool canMark = isValidSquareToMark(i_X, i_Y);
 
             if(canMark)
             {
-                m_Board[i_X - 1, i_Y - 1] = i_Sign;
+                m_Board[i_X, i_Y] = i_Sign;
             }
 
             return canMark;

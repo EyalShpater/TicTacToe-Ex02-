@@ -43,12 +43,12 @@ namespace TicTacToe
 
         private bool isEmptySquare(int i_X, int i_Y) 
         {
-            return m_Board[i_X - 1, i_Y - 1] == eSquareValue.Empty;
+            return m_Board[i_X, i_Y] == eSquareValue.Empty;
         }
 
         private bool isValidSquareToMark(int i_X, int i_Y) 
         {
-            return isValidCoordinateValue(i_X - 1) && isValidCoordinateValue(i_Y - 1) && isEmptySquare(i_X - 1, i_Y - 1);
+            return isValidCoordinateValue(i_X) && isValidCoordinateValue(i_Y) && isEmptySquare(i_X, i_Y);
         }
 
         private bool isValidCoordinateValue(int i_Value) 
@@ -144,5 +144,4 @@ namespace TicTacToe
             return isAllDiagTheSameSign;
         }
     }
-
 }

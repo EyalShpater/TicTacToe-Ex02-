@@ -31,6 +31,17 @@ namespace TicTacToe
             
         }
 
+        public Player CurrentPlayerTurn
+        {
+            get
+            {
+                return m_CurrentPlayerTurn;
+            }
+
+        }
+
+
+
         public int BoardSize
         {
             get

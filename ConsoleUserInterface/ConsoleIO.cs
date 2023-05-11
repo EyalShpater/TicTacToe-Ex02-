@@ -95,6 +95,7 @@ namespace ConsoleUserInterface
             bool isTwoPlayerGame;
 
             Console.WriteLine("Welcome to Tic Tac Toe!");
+            Console.WriteLine("At any stage enter 'q' to quit.");
             boardSize = readBoardSize();
             isTwoPlayerGame = readIfTwoPlayers() == 2;
 
@@ -108,7 +109,13 @@ namespace ConsoleUserInterface
             while (true)
             {
                 Console.Write("Enter board size (3-9): ");
-                if (!int.TryParse(Console.ReadLine(), out size))
+                string input = Console.ReadLine();
+                if (input.ToLower() == "q")
+                {
+                    Environment.Exit(0);
+                }
+
+                if (!int.TryParse(input, out size))
                 {
                     Console.WriteLine("Invalid input! Please enter a number.");
                     continue;
@@ -126,14 +133,21 @@ namespace ConsoleUserInterface
             return size;
         }
 
+
         private static int readIfTwoPlayers()
         {
             int choice;
 
             while (true)
             {
-                Console.Write("Enter 1 for one-player game or 2 for two-player game: ");
-                if (!int.TryParse(Console.ReadLine(), out choice))
+                Console.Write("Enter 1 for one-player game, 2 for two-player game, or 'q' to quit: ");
+                string input = Console.ReadLine();
+                if (input.ToLower() == "q")
+                {
+                    Environment.Exit(0);
+                }
+
+                if (!int.TryParse(input, out choice))
                 {
                     Console.WriteLine("Invalid input! Please enter a number.");
                     continue;
@@ -150,6 +164,7 @@ namespace ConsoleUserInterface
 
             return choice;
         }
+
 
 
         public void StartGame()
@@ -189,9 +204,10 @@ namespace ConsoleUserInterface
             }
         }
 
-        private void getCoordinate(out int x, out int y) // check if enter 'q' and make it more readability
+        private void getCoordinate(out int x, out int y)
         {
-            Console.WriteLine("s turn:");
+            Player currentPlayer = m_Game.CurrentPlayerTurn;
+            Console.WriteLine($"{currentPlayer.Id}'s turn:");
             Console.Write("Enter x coordinate: ");
             x = readInt();
             Console.Write("Enter y coordinate: ");
@@ -199,6 +215,7 @@ namespace ConsoleUserInterface
             x--;
             y--;
         }
+
 
         private static int readInt()
         {

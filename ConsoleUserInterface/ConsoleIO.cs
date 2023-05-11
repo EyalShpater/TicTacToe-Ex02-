@@ -95,25 +95,62 @@ namespace ConsoleUserInterface
             bool isTwoPlayerGame;
 
             Console.WriteLine("Welcome to Tic Tac Toe!");
-            Console.Write("Enter board size: ");
-            boardSize = readInt();
-            Console.Write("Enter 1 for one-player game or 2 for two-player game: ");
-            isTwoPlayerGame = readInt() == 2;
+            boardSize = readBoardSize();
+            isTwoPlayerGame = readIfTwoPlayers() == 2;
 
             m_Game = new Game(boardSize, isTwoPlayerGame);
         }
 
-        private static int readInt()
+        private static int readBoardSize()
         {
-            int result;
+            int size;
 
-            while (!int.TryParse(Console.ReadLine(), out result))
+            while (true)
             {
-                Console.WriteLine("Invalid input! Try again.");
+                Console.Write("Enter board size (3-9): ");
+                if (!int.TryParse(Console.ReadLine(), out size))
+                {
+                    Console.WriteLine("Invalid input! Please enter a number.");
+                    continue;
+                }
+
+                if (size < 3 || size > 9)
+                {
+                    Console.WriteLine("Invalid input! Board size must be between 3-9.");
+                    continue;
+                }
+
+                break;
             }
 
-            return result;
+            return size;
         }
+
+        private static int readIfTwoPlayers()
+        {
+            int choice;
+
+            while (true)
+            {
+                Console.Write("Enter 1 for one-player game or 2 for two-player game: ");
+                if (!int.TryParse(Console.ReadLine(), out choice))
+                {
+                    Console.WriteLine("Invalid input! Please enter a number.");
+                    continue;
+                }
+
+                if (choice < 1 || choice > 2)
+                {
+                    Console.WriteLine("Invalid input! Enter 1 or 2 only.");
+                    continue;
+                }
+
+                break;
+            }
+
+            return choice;
+        }
+
 
         public void StartGame()
         {
@@ -162,6 +199,28 @@ namespace ConsoleUserInterface
             x--;
             y--;
         }
+
+        private static int readInt()
+        {
+            while (true)
+            {
+                string input = Console.ReadLine();
+
+                if (input.Equals("q", StringComparison.OrdinalIgnoreCase))
+                {
+                    Environment.Exit(0);
+                }
+
+                if (int.TryParse(input, out int result))
+                {
+                    return result;
+                }
+
+                Console.WriteLine("Invalid input! Please enter a number or 'q' to quit.");
+            }
+        }
+
+
 
         public void GameOver()
         {

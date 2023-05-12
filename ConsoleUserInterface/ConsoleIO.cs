@@ -25,11 +25,74 @@ namespace ConsoleUserInterface
             m_IsUserStillWantToPlay = true;
         }
 
-        private void clearScreen()
+        /********* Game Functions **********/
+        public void StartGame()
         {
-            Ex02.ConsoleUtils.Screen.Clear();
+            getDataForGameSetupAndInitGame();
+            while (m_IsUserStillWantToPlay && !m_Game.IsGameOver())
+            {
+                clearScreen();
+                printBoard();
+                if (m_Game.IsComputerTurn())
+                {
+                    m_Game.PlayAsComputer();
+                }
+                else
+                {
+                    playAsPlayer();
+                }
+            }
+
+            if (!m_IsUserStillWantToPlay)
+            {
+                quitMode();
+            }
+            else
+            {
+                clearScreen();
+                printBoard();
+                gameOverMode();
+            }
         }
 
+        private void playAsPlayer()
+        {
+            int x, y;
+            bool isTurnCompleted;
+
+            getCoordinate(out x, out y);
+            isTurnCompleted = m_IsUserStillWantToPlay ? m_Game.MarkSquare(x, y) : true;
+            while (!isTurnCompleted && m_IsUserStillWantToPlay)
+            {
+                Console.WriteLine("Couldn't mark the selected square");
+                getCoordinate(out x, out y);
+                isTurnCompleted = m_Game.MarkSquare(x, y);
+            }
+        }
+
+        private void gameOverMode()
+        {
+            Console.WriteLine("Game Over!");
+
+            if (m_Game.IsDraw())
+            {
+                Console.WriteLine("It's a draw!");
+            }
+            else
+            {
+                Console.WriteLine($"{m_Game.Winner.Id} won the game!");
+            }
+
+            printScore();
+            Console.Read();
+        }
+
+        private void quitMode()
+        {
+
+        }
+
+        /********* Print To Console Functions **********/
         private void printBoard()
         {
             printLineOfNumbers();
@@ -76,22 +139,13 @@ namespace ConsoleUserInterface
             Console.WriteLine();
         }
 
-        private char convertESquareValueToChar(Board.eSquareValue eSign)
+        private void printScore()
         {
-            char res = k_EmptySquare;
-
-            switch (eSign)
-            {
-                case Board.eSquareValue.Player1:
-                    res = k_Player1Sign;
-                    break;
-                case Board.eSquareValue.Player2:
-                    res = k_Player2Sign;
-                    break;
-            }
-
-            return res;
+            Console.WriteLine("Player 1 has {0} points | Player 2 has {1} points",
+                m_Game.Player1Score, m_Game.Player2Score);
         }
+
+        /********* Console Input Functions **********/
 
         private void getDataForGameSetupAndInitGame()
         {
@@ -138,19 +192,6 @@ namespace ConsoleUserInterface
             return size;
         }
 
-        private bool checkBoardSizeInputValidity(int i_Input)
-        {
-            bool isValid = (i_Input >= k_MinBoardSize && i_Input <= k_MaxBoardSize);
-
-            if (!isValid)
-            {
-                Console.WriteLine("Invalid input! Board size must be between {0} and {1}.",
-                    k_MinBoardSize, k_MaxBoardSize);
-            }
-
-            return isValid;
-        }
-
         private bool readIfTwoPlayers()
         {
             bool isTwoPlayersGame = true;
@@ -180,62 +221,6 @@ namespace ConsoleUserInterface
             return isTwoPlayersGame;
         }
 
-        private bool checkIfValidNunmberOfPlayersChoice(int i_Input)
-        {
-            bool isValid = (i_Input >= 1 && i_Input <= 2);
-
-            if (!isValid)
-            {
-                Console.WriteLine("Invalid input! Enter 1 or 2 only.");
-            }
-
-            return isValid;
-        }
-
-        public void StartGame()
-        {
-            getDataForGameSetupAndInitGame();
-            while (m_IsUserStillWantToPlay && !m_Game.IsGameOver())
-            {
-                clearScreen();
-                printBoard();
-                if (m_Game.IsComputerTurn())
-                {
-                    m_Game.PlayAsComputer();
-                }
-                else
-                {
-                    playAsPlayer();
-                }
-            }
-
-            if (!m_IsUserStillWantToPlay)
-            {
-                quitMode();
-            }
-            else
-            {
-                clearScreen();
-                printBoard();
-                gameOverMode();
-            }
-        }
-
-        private void playAsPlayer()
-        {
-            int x, y;
-            bool isTurnCompleted;
-
-            getCoordinate(out x, out y);
-            isTurnCompleted = m_IsUserStillWantToPlay ? m_Game.MarkSquare(x, y) : true;
-            while (!isTurnCompleted && m_IsUserStillWantToPlay)
-            {
-                Console.WriteLine("Couldn't mark the selected square");
-                getCoordinate(out x, out y);
-                isTurnCompleted = m_Game.MarkSquare(x, y);
-            }
-        }
-
         private void getCoordinate(out int x, out int y)
         {
             Player currentPlayer = m_Game.CurrentPlayerTurn;
@@ -245,6 +230,24 @@ namespace ConsoleUserInterface
             x = readInt();
             y = m_IsUserStillWantToPlay ? readInt() : k_QuitSign;
             convertUserCoordinatesToBoardCoordinates(ref x, ref y);
+        }
+
+        /********* Utils Functions **********/
+        private char convertESquareValueToChar(Board.eSquareValue eSign)
+        {
+            char res = k_EmptySquare;
+
+            switch (eSign)
+            {
+                case Board.eSquareValue.Player1:
+                    res = k_Player1Sign;
+                    break;
+                case Board.eSquareValue.Player2:
+                    res = k_Player2Sign;
+                    break;
+            }
+
+            return res;
         }
 
         private void convertUserCoordinatesToBoardCoordinates(ref int io_X, ref int io_Y)
@@ -276,25 +279,37 @@ namespace ConsoleUserInterface
             return result;
         }
 
-        public void gameOverMode()
+        private void clearScreen()
         {
-            Console.WriteLine("Game Over!");
-
-            if (m_Game.IsDraw())
-            {
-                Console.WriteLine("It's a draw!");
-            }
-            else
-            {
-                Console.WriteLine($"{m_Game.Winner.Id} won the game!");
-            }
-
-            Console.Read();
+            Ex02.ConsoleUtils.Screen.Clear();
         }
 
-        private void quitMode()
-        {
+        /********* Input Validation Functions **********/
 
+        private bool checkBoardSizeInputValidity(int i_Input)
+        {
+            bool isValid = (i_Input >= k_MinBoardSize && i_Input <= k_MaxBoardSize);
+
+            if (!isValid)
+            {
+                Console.WriteLine("Invalid input! Board size must be between {0} and {1}.",
+                    k_MinBoardSize, k_MaxBoardSize);
+            }
+
+            return isValid;
         }
+
+        private bool checkIfValidNunmberOfPlayersChoice(int i_Input)
+        {
+            bool isValid = (i_Input >= 1 && i_Input <= 2);
+
+            if (!isValid)
+            {
+                Console.WriteLine("Invalid input! Enter 1 or 2 only.");
+            }
+
+            return isValid;
+        }
+
     }
 }

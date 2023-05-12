@@ -6,8 +6,8 @@ namespace TicTacToe
     public class Game
     {
         private Board m_Board;
-        private readonly Player r_Player1;
-        private readonly Player r_Player2;
+        private Player m_Player1;
+        private Player m_Player2;
         private Player m_CurrentPlayerTurn;
         private Player m_GameWinner;
 
@@ -16,9 +16,9 @@ namespace TicTacToe
             Player.ePlayerId player2Id = isTwoPlayerGame ? Player.ePlayerId.Player2 : Player.ePlayerId.Computer;
 
             m_Board = new Board(boardSize);
-            r_Player1 = new Player(Player.ePlayerId.Player1);
-            r_Player2 = new Player(player2Id);
-            m_CurrentPlayerTurn = r_Player1;
+            m_Player1 = new Player(Player.ePlayerId.Player1);
+            m_Player2 = new Player(player2Id);
+            m_CurrentPlayerTurn = m_Player1;
             m_GameWinner = null;
         }
 
@@ -48,6 +48,22 @@ namespace TicTacToe
             }
         }
 
+        public int Player1Score
+        {
+            get
+            {
+                return m_Player1.Score;
+            }
+        }
+
+        public int Player2Score
+        {
+            get
+            {
+                return m_Player2.Score;
+            }
+        }
+
         public Board.eSquareValue GetSignByCoordinates(int i_X, int i_Y)
         {
             return m_Board.GetSquareValue(i_X, i_Y);
@@ -69,6 +85,7 @@ namespace TicTacToe
                 if (isSequance(i_X, i_Y))
                 {
                     m_GameWinner = m_CurrentPlayerTurn;
+                    m_GameWinner.Score++;
                 }
             }
 
@@ -77,9 +94,9 @@ namespace TicTacToe
 
         private void switchBetweenCurrentPlayer()
         {
-            bool isCurrentPlayerIsOne = m_CurrentPlayerTurn == r_Player1;
+            bool isCurrentPlayerIsOne = m_CurrentPlayerTurn == m_Player1;
 
-            m_CurrentPlayerTurn = isCurrentPlayerIsOne ? r_Player2 : r_Player1;
+            m_CurrentPlayerTurn = isCurrentPlayerIsOne ? m_Player2 : m_Player1;
         }
 
         private Board.eSquareValue convertEPlayerToESquareValue (Player i_Player)

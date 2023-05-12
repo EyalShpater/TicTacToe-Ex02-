@@ -55,6 +55,11 @@ namespace ConsoleUserInterface
             }
         }
 
+        private void playRound(ref int io_QuitGame)
+        {
+
+        }
+
         private void playAsPlayer()
         {
             int x, y;

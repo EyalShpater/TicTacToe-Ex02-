@@ -14,6 +14,7 @@ namespace TicTacToe
         internal Board(int i_Size)
         {
             m_Board = new eSquareValue[i_Size, i_Size];
+            ClearBoard();
         }
 
         internal int Size
@@ -39,6 +40,17 @@ namespace TicTacToe
             }
 
             return canMark;
+        }
+
+        internal void ClearBoard()
+        {
+            for (int i = 0; i < this.Size; i++)
+            {
+                for(int j = 0; j < this.Size; j++)
+                {
+                    m_Board[i, j] = eSquareValue.Empty;
+                }
+            }
         }
 
         private bool isEmptySquare(int i_X, int i_Y) 

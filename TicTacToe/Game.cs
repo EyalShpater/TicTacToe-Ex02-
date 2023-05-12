@@ -74,6 +74,13 @@ namespace TicTacToe
             return m_CurrentPlayerTurn.Id == Player.ePlayerId.Computer;
         }
 
+        public void InitGame()
+        {
+            m_Board.ClearBoard();
+            m_CurrentPlayerTurn = m_Player1;
+            m_GameWinner = null;
+        }
+
         public bool MarkSquare(int i_X, int i_Y)
         {
             Board.eSquareValue sign = convertEPlayerToESquareValue(m_CurrentPlayerTurn);

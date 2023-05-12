@@ -12,6 +12,8 @@ namespace ConsoleUserInterface
         private const char k_Player2Sign = 'O';
         private const char k_EmptySquare = ' ';
         private const char k_QuitSign = 'Q';
+        private const string k_YesAnswer = "Yes";
+        private const string k_NoAnswer = "No";
         private const int k_QuitInt = -1;
         private const int k_MinBoardSize = 3;
         private const int k_MaxBoardSize = 9;
@@ -28,7 +30,23 @@ namespace ConsoleUserInterface
         /********* Game Functions **********/
         public void StartGame()
         {
+            bool playNewRound;
+
             getDataForGameSetupAndInitGame();
+            playNewRound = m_Game != null;
+            while (playNewRound)
+            {
+                playRound();
+                playNewRound = askIfTheUserWantToPlayAnotherRound();
+                m_Game.InitGame();
+            }
+
+            Console.WriteLine("Bye!");
+            Console.Read();
+        }
+
+        private void playRound()
+        {
             while (m_IsUserStillWantToPlay && !m_Game.IsGameOver())
             {
                 clearScreen();
@@ -43,21 +61,10 @@ namespace ConsoleUserInterface
                 }
             }
 
-            if (!m_IsUserStillWantToPlay)
+            if (m_IsUserStillWantToPlay)
             {
-                quitMode();
-            }
-            else
-            {
-                clearScreen();
-                printBoard();
                 gameOverMode();
             }
-        }
-
-        private void playRound(ref int io_QuitGame)
-        {
-
         }
 
         private void playAsPlayer()
@@ -77,6 +84,8 @@ namespace ConsoleUserInterface
 
         private void gameOverMode()
         {
+            clearScreen();
+            printBoard();
             Console.WriteLine("Game Over!");
 
             if (m_Game.IsDraw())
@@ -92,9 +101,21 @@ namespace ConsoleUserInterface
             Console.Read();
         }
 
-        private void quitMode()
+        private bool askIfTheUserWantToPlayAnotherRound()
         {
+            string input;
 
+            Console.WriteLine("Please write '{0}' if you want to play another round, else write '{1}'.",
+                k_YesAnswer, k_NoAnswer);
+            input = Console.ReadLine();
+            while(input != k_YesAnswer && input != k_NoAnswer)
+            {
+                Console.WriteLine("Invalid input! Type only '{0}' to play another round or '{1}'",
+                    k_YesAnswer, k_NoAnswer);
+                input = Console.ReadLine();
+            }
+
+            return input == k_YesAnswer;
         }
 
         /********* Print To Console Functions **********/
@@ -315,6 +336,5 @@ namespace ConsoleUserInterface
 
             return isValid;
         }
-
     }
 }

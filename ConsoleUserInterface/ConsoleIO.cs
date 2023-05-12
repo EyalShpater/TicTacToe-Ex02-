@@ -96,14 +96,17 @@ namespace ConsoleUserInterface
         private void getDataForGameSetupAndInitGame()
         {
             int boardSize;
-            bool isTwoPlayerGame;
+            bool? isTwoPlayerGame = null;
 
             Console.WriteLine("Welcome to Tic Tac Toe!");
             Console.WriteLine("At any stage enter '{0}' to quit.", k_QuitSign);
             boardSize = readBoardSize();
-            isTwoPlayerGame = readIfTwoPlayers();
+            if (m_IsUserStillWantToPlay)
+            {
+                isTwoPlayerGame = readIfTwoPlayers();
+            }
 
-            m_Game = m_IsUserStillWantToPlay ? new Game(boardSize, isTwoPlayerGame) : null;
+            m_Game = m_IsUserStillWantToPlay ? new Game(boardSize, (bool)isTwoPlayerGame) : null;
         }
 
         private int readBoardSize()
@@ -206,9 +209,16 @@ namespace ConsoleUserInterface
                 }
             }
 
-            clearScreen();
-            printBoard();
-            GameOver();
+            if (!m_IsUserStillWantToPlay)
+            {
+                quitMode();
+            }
+            else
+            {
+                clearScreen();
+                printBoard();
+                gameOverMode();
+            }
         }
 
         private void playAsPlayer()
@@ -217,8 +227,8 @@ namespace ConsoleUserInterface
             bool isTurnCompleted;
 
             getCoordinate(out x, out y);
-            isTurnCompleted = m_Game.MarkSquare(x, y);
-            while (!isTurnCompleted)
+            isTurnCompleted = m_IsUserStillWantToPlay ? m_Game.MarkSquare(x, y) : true;
+            while (!isTurnCompleted && m_IsUserStillWantToPlay)
             {
                 Console.WriteLine("Couldn't mark the selected square");
                 getCoordinate(out x, out y);
@@ -229,13 +239,18 @@ namespace ConsoleUserInterface
         private void getCoordinate(out int x, out int y)
         {
             Player currentPlayer = m_Game.CurrentPlayerTurn;
+
             Console.WriteLine($"{currentPlayer.Id}'s turn:");
-            Console.Write("Enter x coordinate: ");
+            Console.WriteLine("Enter x and y coordinate (separates by 'ENTER'): ");
             x = readInt();
-            Console.Write("Enter y coordinate: ");
-            y = readInt();
-            x--;
-            y--;
+            y = m_IsUserStillWantToPlay ? readInt() : k_QuitSign;
+            convertUserCoordinatesToBoardCoordinates(ref x, ref y);
+        }
+
+        private void convertUserCoordinatesToBoardCoordinates(ref int io_X, ref int io_Y)
+        {
+            io_X--;
+            io_Y--;
         }
 
         private int readInt()
@@ -250,7 +265,7 @@ namespace ConsoleUserInterface
                 isValidInput = int.TryParse(input, out result) || input == k_QuitSign.ToString();
                 if (!isValidInput)
                 {
-                    Console.WriteLine("Invalid input! Please enter a number or 'q' to quit.");
+                    Console.WriteLine("Invalid input! Please enter a number or {0} to quit.", k_QuitSign);
                 }
                 else if (input == k_QuitSign.ToString())
                 {
@@ -261,7 +276,7 @@ namespace ConsoleUserInterface
             return result;
         }
 
-        public void GameOver()
+        public void gameOverMode()
         {
             Console.WriteLine("Game Over!");
 
@@ -275,6 +290,11 @@ namespace ConsoleUserInterface
             }
 
             Console.Read();
+        }
+
+        private void quitMode()
+        {
+
         }
     }
 }

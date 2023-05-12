@@ -3,6 +3,7 @@ using TicTacToe;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace ConsoleUserInterface
 {
@@ -39,6 +40,7 @@ namespace ConsoleUserInterface
                 playRound();
                 playNewRound = askIfTheUserWantToPlayAnotherRound();
                 m_Game.InitGame();
+                m_IsUserStillWantToPlay = true;
             }
 
             Console.WriteLine("Bye!");
@@ -51,9 +53,11 @@ namespace ConsoleUserInterface
             {
                 clearScreen();
                 printBoard();
+                Console.WriteLine($"{m_Game.CurrentPlayerTurn.Id}'s turn:");
                 if (m_Game.IsComputerTurn())
                 {
                     m_Game.PlayAsComputer();
+                    Thread.Sleep(500);
                 }
                 else
                 {
@@ -98,7 +102,6 @@ namespace ConsoleUserInterface
             }
 
             printScore();
-            Console.Read();
         }
 
         private bool askIfTheUserWantToPlayAnotherRound()
@@ -167,8 +170,10 @@ namespace ConsoleUserInterface
 
         private void printScore()
         {
-            Console.WriteLine("Player 1 has {0} points | Player 2 has {1} points",
+            Console.WriteLine("\n***********************************************");
+            Console.WriteLine("* Player1 has {0} points | Player2 has {1} points *",
                 m_Game.Player1Score, m_Game.Player2Score);
+            Console.WriteLine("***********************************************\n");
         }
 
         /********* Console Input Functions **********/
@@ -249,9 +254,6 @@ namespace ConsoleUserInterface
 
         private void getCoordinate(out int x, out int y)
         {
-            Player currentPlayer = m_Game.CurrentPlayerTurn;
-
-            Console.WriteLine($"{currentPlayer.Id}'s turn:");
             Console.WriteLine("Enter x and y coordinate (separates by 'ENTER'): ");
             x = readInt();
             y = m_IsUserStillWantToPlay ? readInt() : k_QuitSign;

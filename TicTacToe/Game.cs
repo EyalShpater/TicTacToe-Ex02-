@@ -40,8 +40,6 @@ namespace TicTacToe
 
         }
 
-
-
         public int BoardSize
         {
             get

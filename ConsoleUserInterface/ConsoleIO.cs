@@ -8,15 +8,21 @@ namespace ConsoleUserInterface
 {
     class ConsoleIO
     {
-        private const char player1Sign = 'X';
-        private const char player2Sign = 'O';
-        private const char emptySquare = ' ';
+        private const char k_Player1Sign = 'X';
+        private const char k_Player2Sign = 'O';
+        private const char k_EmptySquare = ' ';
+        private const char k_QuitSign = 'Q';
+        private const int k_QuitInt = -1;
+        private const int k_MinBoardSize = 3;
+        private const int k_MaxBoardSize = 9;
 
         private Game m_Game;
+        private bool m_IsUserStillWantToPlay;
 
         public ConsoleIO()
         {
             m_Game = null;
+            m_IsUserStillWantToPlay = true;
         }
 
         private void clearScreen()
@@ -27,12 +33,10 @@ namespace ConsoleUserInterface
         private void printBoard()
         {
             printLineOfNumbers();
-
             for (int i = 0; i < m_Game.BoardSize; i++)
             {
                 printRowOfBoard(i);
                 printLineBuffer();
-                Console.WriteLine(); // add a newline character after each row
             }
         }
 
@@ -55,7 +59,7 @@ namespace ConsoleUserInterface
                 Console.Write("====");
             }
 
-            Console.WriteLine("=");
+            Console.WriteLine("=\n");
         }
 
         private void printRowOfBoard(int i_RowIndex)
@@ -74,15 +78,15 @@ namespace ConsoleUserInterface
 
         private char convertESquareValueToChar(Board.eSquareValue eSign)
         {
-            char res = emptySquare;
+            char res = k_EmptySquare;
 
             switch (eSign)
             {
                 case Board.eSquareValue.Player1:
-                    res = player1Sign;
+                    res = k_Player1Sign;
                     break;
                 case Board.eSquareValue.Player2:
-                    res = player2Sign;
+                    res = k_Player2Sign;
                     break;
             }
 
@@ -95,82 +99,100 @@ namespace ConsoleUserInterface
             bool isTwoPlayerGame;
 
             Console.WriteLine("Welcome to Tic Tac Toe!");
-            Console.WriteLine("At any stage enter 'q' to quit.");
+            Console.WriteLine("At any stage enter '{0}' to quit.", k_QuitSign);
             boardSize = readBoardSize();
-            isTwoPlayerGame = readIfTwoPlayers() == 2;
+            isTwoPlayerGame = readIfTwoPlayers();
 
-            m_Game = new Game(boardSize, isTwoPlayerGame);
+            m_Game = m_IsUserStillWantToPlay ? new Game(boardSize, isTwoPlayerGame) : null;
         }
 
-        private static int readBoardSize()
+        private int readBoardSize()
         {
-            int size;
+            int size = k_QuitInt;
+            bool isValidInput = false;
+            string input;
 
-            while (true)
+            while (!isValidInput)
             {
-                Console.Write("Enter board size (3-9): ");
-                string input = Console.ReadLine();
-                if (input.ToLower() == "q")
-                {
-                    Environment.Exit(0);
-                }
+                Console.WriteLine("Enter board size between {0} and {1}: ", k_MinBoardSize, k_MaxBoardSize);
+                input = Console.ReadLine();
 
-                if (!int.TryParse(input, out size))
+                if (int.TryParse(input, out size))
+                {
+                    isValidInput = checkBoardSizeInputValidity(size);
+                }
+                else if (input == k_QuitSign.ToString())
+                {
+                    m_IsUserStillWantToPlay = false;
+                    isValidInput = true;
+                }
+                else
                 {
                     Console.WriteLine("Invalid input! Please enter a number.");
-                    continue;
                 }
-
-                if (size < 3 || size > 9)
-                {
-                    Console.WriteLine("Invalid input! Board size must be between 3-9.");
-                    continue;
-                }
-
-                break;
             }
 
             return size;
         }
 
-
-        private static int readIfTwoPlayers()
+        private bool checkBoardSizeInputValidity(int i_Input)
         {
-            int choice;
+            bool isValid = (i_Input >= k_MinBoardSize && i_Input <= k_MaxBoardSize);
 
-            while (true)
+            if (!isValid)
             {
-                Console.Write("Enter 1 for one-player game, 2 for two-player game, or 'q' to quit: ");
-                string input = Console.ReadLine();
-                if (input.ToLower() == "q")
-                {
-                    Environment.Exit(0);
-                }
-
-                if (!int.TryParse(input, out choice))
-                {
-                    Console.WriteLine("Invalid input! Please enter a number.");
-                    continue;
-                }
-
-                if (choice < 1 || choice > 2)
-                {
-                    Console.WriteLine("Invalid input! Enter 1 or 2 only.");
-                    continue;
-                }
-
-                break;
+                Console.WriteLine("Invalid input! Board size must be between {0} and {1}.",
+                    k_MinBoardSize, k_MaxBoardSize);
             }
 
-            return choice;
+            return isValid;
         }
 
+        private bool readIfTwoPlayers()
+        {
+            bool isTwoPlayersGame = true;
+            bool isValidCohice = false;
+            string input;
 
+            while (!isValidCohice)
+            {
+                Console.Write("Enter 1 for one-player game, 2 for two-player game, or '{0}' to quit: ", k_QuitSign);
+                input = Console.ReadLine();
+                if (int.TryParse(input, out int choice))
+                {
+                    isValidCohice = checkIfValidNunmberOfPlayersChoice(choice);
+                    isTwoPlayersGame = (choice == 2);
+                }
+                else if (input == k_QuitSign.ToString())
+                {
+                    m_IsUserStillWantToPlay = false;
+                    isValidCohice = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input! Please enter a number.");
+                }
+            }
+
+            return isTwoPlayersGame;
+        }
+
+        private bool checkIfValidNunmberOfPlayersChoice(int i_Input)
+        {
+            bool isValid = (i_Input >= 1 && i_Input <= 2);
+
+            if (!isValid)
+            {
+                Console.WriteLine("Invalid input! Enter 1 or 2 only.");
+            }
+
+            return isValid;
+        }
 
         public void StartGame()
         {
             getDataForGameSetupAndInitGame();
-            while (!m_Game.IsGameOver())
+            while (m_IsUserStillWantToPlay && !m_Game.IsGameOver())
             {
                 clearScreen();
                 printBoard();
@@ -183,9 +205,9 @@ namespace ConsoleUserInterface
                     playAsPlayer();
                 }
             }
+
             clearScreen();
             printBoard();
-
             GameOver();
         }
 
@@ -216,28 +238,28 @@ namespace ConsoleUserInterface
             y--;
         }
 
-
-        private static int readInt()
+        private int readInt()
         {
-            while (true)
+            int result = k_QuitInt;
+            bool isValidInput = false;
+
+            while (!isValidInput)
             {
                 string input = Console.ReadLine();
 
-                if (input.Equals("q", StringComparison.OrdinalIgnoreCase))
+                isValidInput = int.TryParse(input, out result) || input == k_QuitSign.ToString();
+                if (!isValidInput)
                 {
-                    Environment.Exit(0);
+                    Console.WriteLine("Invalid input! Please enter a number or 'q' to quit.");
                 }
-
-                if (int.TryParse(input, out int result))
+                else if (input == k_QuitSign.ToString())
                 {
-                    return result;
+                    m_IsUserStillWantToPlay = false;
                 }
-
-                Console.WriteLine("Invalid input! Please enter a number or 'q' to quit.");
             }
+
+            return result;
         }
-
-
 
         public void GameOver()
         {
@@ -255,6 +277,4 @@ namespace ConsoleUserInterface
             Console.Read();
         }
     }
-
-
 }

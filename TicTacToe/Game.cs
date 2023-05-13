@@ -10,11 +10,11 @@ namespace TicTacToe
         private Player m_CurrentPlayerTurn;
         private Player m_GameWinner;
 
-        public Game(int boardSize, bool isTwoPlayerGame)
+        public Game(int i_BoardSize, bool i_IsTwoPlayerGame)
         {
-            Player.ePlayerId player2Id = isTwoPlayerGame ? Player.ePlayerId.Player2 : Player.ePlayerId.Computer;
+            Player.ePlayerId player2Id = i_IsTwoPlayerGame ? Player.ePlayerId.Player2 : Player.ePlayerId.Computer;
 
-            m_Board = new Board(boardSize);
+            m_Board = new Board(i_BoardSize);
             m_Player1 = new Player(Player.ePlayerId.Player1);
             m_Player2 = new Player(player2Id);
             m_CurrentPlayerTurn = m_Player1;

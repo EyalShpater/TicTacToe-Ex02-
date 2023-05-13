@@ -42,7 +42,7 @@ namespace ConsoleUserInterface
                 m_Game.InitGame();
                 m_IsUserStillWantToPlay = true;
             }
-
+            
             Console.WriteLine("Bye!");
             Console.Read();
         }
@@ -57,7 +57,7 @@ namespace ConsoleUserInterface
                 if (m_Game.IsComputerTurn())
                 {
                     m_Game.PlayAsComputer();
-                    Thread.Sleep(500);
+                    pauseTheBoard();
                 }
                 else
                 {
@@ -310,6 +310,11 @@ namespace ConsoleUserInterface
         private void clearScreen()
         {
             Ex02.ConsoleUtils.Screen.Clear();
+        }
+
+        private void pauseTheBoard()
+        {
+            Thread.Sleep(500);
         }
 
         /********* Input Validation Functions **********/

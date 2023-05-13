@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace TicTacToe
 {
@@ -53,22 +50,7 @@ namespace TicTacToe
             }
         }
 
-        private bool isEmptySquare(int i_X, int i_Y) 
-        {
-            return m_Board[i_X, i_Y] == eSquareValue.Empty;
-        }
-
-        private bool isValidSquareToMark(int i_X, int i_Y) 
-        {
-            return isValidCoordinateValue(i_X) && isValidCoordinateValue(i_Y) && isEmptySquare(i_X, i_Y);
-        }
-
-        private bool isValidCoordinateValue(int i_Value) 
-        {
-            return i_Value >= 0 && i_Value < this.Size;
-        }
-
-        internal bool AreAllSquaresMarked() 
+        internal bool AreAllSquaresMarked()
         {
             bool allMarked = true;
 
@@ -85,6 +67,21 @@ namespace TicTacToe
             }
 
             return allMarked;
+        }
+
+        private bool isEmptySquare(int i_X, int i_Y) 
+        {
+            return m_Board[i_X, i_Y] == eSquareValue.Empty;
+        }
+
+        private bool isValidSquareToMark(int i_X, int i_Y) 
+        {
+            return isValidCoordinateValue(i_X) && isValidCoordinateValue(i_Y) && isEmptySquare(i_X, i_Y);
+        }
+
+        private bool isValidCoordinateValue(int i_Value) 
+        {
+            return i_Value >= 0 && i_Value < this.Size;
         }
     }
 }

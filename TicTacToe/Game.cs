@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Threading;
-using static TicTacToe.Board;
 
 namespace TicTacToe
 {
@@ -100,6 +98,30 @@ namespace TicTacToe
             return successMark;
         }
 
+        public void PlayAsComputer()
+        {
+            int x, y;
+            Random rand = new Random();
+            bool succeedToMark;
+
+            do
+            {
+                x = rand.Next(m_Board.Size);
+                y = rand.Next(m_Board.Size);
+                succeedToMark = MarkSquare(x, y);
+            } while (!succeedToMark);
+        }
+
+        public bool IsGameOver()
+        {
+            return m_Board.AreAllSquaresMarked() || hasWinner();
+        }
+
+        public bool IsDraw()
+        {
+            return m_Board.AreAllSquaresMarked() && !hasWinner();
+        }
+
         private void switchBetweenCurrentPlayer()
         {
             bool isCurrentPlayerIsOne = m_CurrentPlayerTurn == m_Player1;
@@ -122,33 +144,7 @@ namespace TicTacToe
 
             return res;
         }
-
-        public void PlayAsComputer()
-        {
-            int x, y;
-            
-            Random rand = new Random();
-            x = rand.Next(m_Board.Size);
-            y = rand.Next(m_Board.Size);
-            while (!MarkSquare(x, y))// is readble? (!m_Board.IsEmpty(x, y))
-            {
-                x = rand.Next(m_Board.Size);
-                y = rand.Next(m_Board.Size);
-            }
-
-            MarkSquare(x, y);
-        }
-
-        public bool IsGameOver()
-        {
-            return m_Board.AreAllSquaresMarked() || hasWinner();
-        }
-
-        public bool IsDraw()
-        {
-            return m_Board.AreAllSquaresMarked() && !hasWinner();
-        }
-
+       
         private bool hasWinner()
         {
             return m_GameWinner != null;
@@ -161,8 +157,8 @@ namespace TicTacToe
 
         private bool checkSequanceInRow(int i_Row) 
         {
-            eSquareValue sign = m_Board.GetSquareValue(i_Row, 0);
-            bool isAllRowTheSameSign = (sign != eSquareValue.Empty);
+            Board.eSquareValue sign = m_Board.GetSquareValue(i_Row, 0);
+            bool isAllRowTheSameSign = (sign != Board.eSquareValue.Empty);
 
             for (int i = 0; i < m_Board.Size; i++)
             {
@@ -177,8 +173,8 @@ namespace TicTacToe
 
         private bool checkSequanceInColumn(int i_Col)
         {
-            eSquareValue sign = m_Board.GetSquareValue(0, i_Col);
-            bool isAllColumnTheSameSign = (sign != eSquareValue.Empty);
+            Board.eSquareValue sign = m_Board.GetSquareValue(0, i_Col);
+            bool isAllColumnTheSameSign = (sign != Board.eSquareValue.Empty);
 
             for (int i = 0; i < m_Board.Size; i++)
             {
@@ -193,8 +189,8 @@ namespace TicTacToe
 
         private bool checkSequanceInDiagonal()
         {
-            eSquareValue sign = m_Board.GetSquareValue(0, 0);
-            bool isAllDiagTheSameSign = (sign != eSquareValue.Empty);
+            Board.eSquareValue sign = m_Board.GetSquareValue(0, 0);
+            bool isAllDiagTheSameSign = (sign != Board.eSquareValue.Empty);
 
             for (int i = 0; i < m_Board.Size; i++)
             {
@@ -209,8 +205,8 @@ namespace TicTacToe
 
         private bool checkAntiDiagonal()
         {
-            eSquareValue sign = m_Board.GetSquareValue(0, m_Board.Size - 1);
-            bool isAllDiagTheSameSign = (sign != eSquareValue.Empty);
+            Board.eSquareValue sign = m_Board.GetSquareValue(0, m_Board.Size - 1);
+            bool isAllDiagTheSameSign = (sign != Board.eSquareValue.Empty);
 
             for (int i = 0; i < m_Board.Size; i++)
             {

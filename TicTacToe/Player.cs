@@ -9,7 +9,9 @@ namespace TicTacToe
     {
         public enum ePlayerId 
         { 
-            Player1 = 1, Player2, Computer 
+            Player1 = 1, 
+            Player2, 
+            Computer 
         }
 
         private readonly ePlayerId r_Id;

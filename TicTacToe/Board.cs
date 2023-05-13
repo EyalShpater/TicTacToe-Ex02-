@@ -6,7 +6,9 @@ namespace TicTacToe
     {
         public enum eSquareValue
         { 
-            Empty, Player1, Player2 
+            Empty, 
+            Player1, 
+            Player2 
         }
         
         private eSquareValue[,] m_Board; 

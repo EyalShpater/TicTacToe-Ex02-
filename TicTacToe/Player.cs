@@ -7,7 +7,10 @@ namespace TicTacToe
 {
     public class Player
     {
-        public enum ePlayerId { Player1 = 1, Player2, Computer };
+        public enum ePlayerId 
+        { 
+            Player1 = 1, Player2, Computer 
+        }
 
         private readonly ePlayerId r_Id;
         private int m_Score;
@@ -29,6 +32,7 @@ namespace TicTacToe
             { 
                 return m_Score; 
             }
+
             set 
             { 
                 m_Score = value; 

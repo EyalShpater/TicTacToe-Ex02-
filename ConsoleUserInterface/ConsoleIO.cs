@@ -1,13 +1,10 @@
 ﻿using System;
-using TicTacToe;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
+using TicTacToe;
 
 namespace ConsoleUserInterface
 {
-    class ConsoleIO
+    public class ConsoleIO
     {
         private const char k_Player1Sign = 'X';
         private const char k_Player2Sign = 'O';

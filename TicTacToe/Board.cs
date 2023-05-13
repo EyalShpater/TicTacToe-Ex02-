@@ -4,7 +4,10 @@ namespace TicTacToe
 {
     public class Board
     {
-        public enum eSquareValue { Empty, Player1, Player2 };
+        public enum eSquareValue
+        { 
+            Empty, Player1, Player2 
+        }
         
         private eSquareValue[,] m_Board; 
 

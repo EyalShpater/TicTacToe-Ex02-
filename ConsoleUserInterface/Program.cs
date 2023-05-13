@@ -12,6 +12,5 @@ namespace ConsoleUserInterface
             ConsoleIO game = new ConsoleIO();
             game.StartGame();
         }
-
     }
 }

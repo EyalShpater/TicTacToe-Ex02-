@@ -26,8 +26,7 @@ namespace TicTacToe
             get
             {
                 return m_GameWinner;
-            }
-            
+            }  
         }
 
         public Player CurrentPlayerTurn
@@ -36,7 +35,6 @@ namespace TicTacToe
             {
                 return m_CurrentPlayerTurn;
             }
-
         }
 
         public int BoardSize
@@ -129,7 +127,7 @@ namespace TicTacToe
             m_CurrentPlayerTurn = isCurrentPlayerIsOne ? m_Player2 : m_Player1;
         }
 
-        private Board.eSquareValue convertEPlayerToESquareValue (Player i_Player)
+        private Board.eSquareValue convertEPlayerToESquareValue(Player i_Player)
         {
             Board.eSquareValue res;
 
